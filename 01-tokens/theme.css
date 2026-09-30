@@ -1,0 +1,227 @@
+/* =============================================================================
+   Taco Tuesday Consulting — theme.css
+   Concept: "Agave & Maiz". Import this ONCE, globally.
+
+   How it works: every colour in the product reads a semantic variable
+   (--tt-brand, --tt-text-primary), never a palette value (--tt-agave-600).
+   Switching light/dark then means redefining ~20 variables in one place
+   instead of hunting hex codes across the app.
+
+   Theme resolution, in order:
+     1. [data-theme="dark"] / [data-theme="light"]  -> explicit user choice
+     2. prefers-color-scheme                        -> the OS setting
+     3. :root                                       -> light, the default
+   ========================================================================== */
+
+:root {
+  /* ---- Palette (raw). Do not use these directly in components. ---------- */
+  --tt-agave-50:#ECF7F4; --tt-agave-100:#D0EDE6; --tt-agave-200:#A3DACE;
+  --tt-agave-300:#6FC2B2; --tt-agave-400:#41A695; --tt-agave-500:#22897A;
+  --tt-agave-600:#176E63; --tt-agave-700:#12574F; --tt-agave-800:#0F453F;
+  --tt-agave-900:#0C3833; --tt-agave-950:#06211E;
+
+  --tt-maiz-50:#FDF6E9; --tt-maiz-100:#FAE9C6; --tt-maiz-200:#F5D28C;
+  --tt-maiz-300:#EEB74E; --tt-maiz-400:#E5A020; --tt-maiz-500:#C98314;
+  --tt-maiz-600:#A26610; --tt-maiz-700:#7E4F10; --tt-maiz-800:#5E3B0E;
+  --tt-maiz-900:#452C0C; --tt-maiz-950:#241605;
+
+  --tt-barro-0:#FFFFFF;  --tt-barro-25:#FBFAF8; --tt-barro-50:#F6F4F1;
+  --tt-barro-100:#EDEAE5;--tt-barro-200:#DDD8D0;--tt-barro-300:#C3BCB1;
+  --tt-barro-400:#A0968A;--tt-barro-500:#7E7468;--tt-barro-600:#625A50;
+  --tt-barro-700:#4B443C;--tt-barro-800:#332E29;--tt-barro-900:#211E1A;
+  --tt-barro-950:#14120F;
+
+  /* ---- Typography ------------------------------------------------------- */
+  --tt-font-display:'Outfit','Segoe UI',system-ui,sans-serif;
+  --tt-font-body:'Inter','Segoe UI',system-ui,sans-serif;
+  --tt-font-mono:'JetBrains Mono','Cascadia Code',ui-monospace,monospace;
+
+  --tt-text-xs:.75rem;  --tt-text-sm:.875rem; --tt-text-base:1rem;
+  --tt-text-lg:1.125rem;--tt-text-xl:1.25rem; --tt-text-2xl:1.5rem;
+  --tt-text-3xl:1.875rem;--tt-text-4xl:2.25rem;--tt-text-5xl:3rem;
+
+  --tt-leading-tight:1.2; --tt-leading-snug:1.35;
+  --tt-leading-normal:1.55; --tt-leading-relaxed:1.7;
+  --tt-tracking-tight:-.02em; --tt-tracking-wide:.04em;
+
+  /* ---- Space, radius, motion -------------------------------------------- */
+  --tt-space-1:.25rem; --tt-space-2:.5rem;  --tt-space-3:.75rem;
+  --tt-space-4:1rem;   --tt-space-5:1.5rem; --tt-space-6:2rem;
+  --tt-space-7:3rem;   --tt-space-8:4rem;   --tt-space-9:6rem;
+
+  --tt-radius-sm:4px; --tt-radius-md:8px; --tt-radius-lg:12px;
+  --tt-radius-xl:16px; --tt-radius-full:999px;
+
+  --tt-motion-fast:120ms; --tt-motion-base:200ms; --tt-motion-slow:320ms;
+  --tt-ease:cubic-bezier(.2,0,.15,1);
+
+  /* ---- SEMANTIC: light theme (the default) ------------------------------ */
+  --tt-bg-canvas:var(--tt-barro-25);
+  --tt-bg-surface:var(--tt-barro-0);
+  --tt-bg-subtle:var(--tt-barro-50);
+  --tt-bg-inset:var(--tt-barro-100);
+  --tt-bg-inverse:var(--tt-barro-900);
+
+  --tt-border:var(--tt-barro-200);
+  --tt-border-strong:var(--tt-barro-300);
+
+  --tt-text-primary:var(--tt-barro-900);
+  --tt-text-secondary:var(--tt-barro-600);
+  --tt-text-muted:var(--tt-barro-500);
+  --tt-text-inverse:var(--tt-barro-25);
+
+  --tt-brand:var(--tt-agave-600);
+  --tt-brand-hover:var(--tt-agave-700);
+  --tt-brand-active:var(--tt-agave-800);
+  --tt-brand-subtle:var(--tt-agave-50);
+  --tt-brand-border:var(--tt-agave-200);
+  --tt-brand-text:var(--tt-agave-700);
+  --tt-on-brand:var(--tt-barro-0);
+
+  --tt-accent:var(--tt-maiz-500);
+  --tt-accent-subtle:var(--tt-maiz-50);
+  --tt-on-accent:var(--tt-barro-0);
+
+  --tt-success:#1E7F53; --tt-success-subtle:#E6F4EC;
+  --tt-warning:#C98314; --tt-warning-subtle:#FDF6E9;
+  --tt-danger:#BC3B2E;  --tt-danger-subtle:#FBEDEB;
+  --tt-info:#35688F;    --tt-info-subtle:#EAF1F7;
+
+  --tt-focus:var(--tt-agave-400);
+  --tt-overlay:rgba(33,30,26,.48);
+
+  --tt-shadow-sm:0 1px 2px rgba(33,30,26,.06), 0 1px 1px rgba(33,30,26,.04);
+  --tt-shadow-md:0 4px 12px rgba(33,30,26,.08), 0 1px 3px rgba(33,30,26,.06);
+  --tt-shadow-lg:0 12px 32px rgba(33,30,26,.12), 0 2px 8px rgba(33,30,26,.06);
+
+  color-scheme: light;
+}
+
+/* ---- SEMANTIC: dark theme --------------------------------------------------
+   Only the semantic layer is redefined. The palette above never changes —
+   dark mode is not "different colours", it is the same colours used in a
+   different role. That is why the brand goes from agave-600 to agave-300:
+   on a near-black canvas the dark teal would fail contrast, the light one
+   reaches ~9:1.
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --tt-bg-canvas:var(--tt-barro-950);
+    --tt-bg-surface:var(--tt-barro-900);
+    --tt-bg-subtle:var(--tt-barro-800);
+    --tt-bg-inset:var(--tt-barro-800);
+    --tt-bg-inverse:var(--tt-barro-50);
+
+    --tt-border:#3B3630;
+    --tt-border-strong:var(--tt-barro-700);
+
+    --tt-text-primary:var(--tt-barro-50);
+    --tt-text-secondary:var(--tt-barro-300);
+    --tt-text-muted:var(--tt-barro-400);
+    --tt-text-inverse:var(--tt-barro-950);
+
+    --tt-brand:var(--tt-agave-300);
+    --tt-brand-hover:var(--tt-agave-200);
+    --tt-brand-active:var(--tt-agave-100);
+    --tt-brand-subtle:var(--tt-agave-950);
+    --tt-brand-border:var(--tt-agave-800);
+    --tt-brand-text:var(--tt-agave-300);
+    --tt-on-brand:var(--tt-agave-950);
+
+    --tt-accent:var(--tt-maiz-300);
+    --tt-accent-subtle:var(--tt-maiz-950);
+    --tt-on-accent:var(--tt-maiz-950);
+
+    --tt-success:#5CBF8B; --tt-success-subtle:#0E2A1D;
+    --tt-warning:#EEB74E; --tt-warning-subtle:#2B1F08;
+    --tt-danger:#E58274;  --tt-danger-subtle:#2E1512;
+    --tt-info:#7EAFD6;    --tt-info-subtle:#12212C;
+
+    --tt-focus:var(--tt-agave-300);
+    --tt-overlay:rgba(6,33,30,.64);
+
+    --tt-shadow-sm:0 1px 2px rgba(0,0,0,.4);
+    --tt-shadow-md:0 4px 12px rgba(0,0,0,.45);
+    --tt-shadow-lg:0 12px 32px rgba(0,0,0,.55);
+
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --tt-bg-canvas:var(--tt-barro-950);
+  --tt-bg-surface:var(--tt-barro-900);
+  --tt-bg-subtle:var(--tt-barro-800);
+  --tt-bg-inset:var(--tt-barro-800);
+  --tt-bg-inverse:var(--tt-barro-50);
+
+  --tt-border:#3B3630;
+  --tt-border-strong:var(--tt-barro-700);
+
+  --tt-text-primary:var(--tt-barro-50);
+  --tt-text-secondary:var(--tt-barro-300);
+  --tt-text-muted:var(--tt-barro-400);
+  --tt-text-inverse:var(--tt-barro-950);
+
+  --tt-brand:var(--tt-agave-300);
+  --tt-brand-hover:var(--tt-agave-200);
+  --tt-brand-active:var(--tt-agave-100);
+  --tt-brand-subtle:var(--tt-agave-950);
+  --tt-brand-border:var(--tt-agave-800);
+  --tt-brand-text:var(--tt-agave-300);
+  --tt-on-brand:var(--tt-agave-950);
+
+  --tt-accent:var(--tt-maiz-300);
+  --tt-accent-subtle:var(--tt-maiz-950);
+  --tt-on-accent:var(--tt-maiz-950);
+
+  --tt-success:#5CBF8B; --tt-success-subtle:#0E2A1D;
+  --tt-warning:#EEB74E; --tt-warning-subtle:#2B1F08;
+  --tt-danger:#E58274;  --tt-danger-subtle:#2E1512;
+  --tt-info:#7EAFD6;    --tt-info-subtle:#12212C;
+
+  --tt-focus:var(--tt-agave-300);
+  --tt-overlay:rgba(6,33,30,.64);
+
+  --tt-shadow-sm:0 1px 2px rgba(0,0,0,.4);
+  --tt-shadow-md:0 4px 12px rgba(0,0,0,.45);
+  --tt-shadow-lg:0 12px 32px rgba(0,0,0,.55);
+
+  color-scheme: dark;
+}
+
+/* ---- Base ---------------------------------------------------------------- */
+html { color-scheme: light dark; }
+
+body {
+  margin: 0;
+  background: var(--tt-bg-canvas);
+  color: var(--tt-text-primary);
+  font-family: var(--tt-font-body);
+  font-size: var(--tt-text-base);
+  line-height: var(--tt-leading-normal);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,h2,h3,h4 {
+  font-family: var(--tt-font-display);
+  line-height: var(--tt-leading-tight);
+  letter-spacing: var(--tt-tracking-tight);
+  margin: 0 0 var(--tt-space-3);
+}
+
+code, pre, kbd { font-family: var(--tt-font-mono); }
+
+/* One focus ring for the whole product. Never remove it without replacing it. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--tt-focus);
+  outline-offset: 2px;
+  border-radius: var(--tt-radius-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}

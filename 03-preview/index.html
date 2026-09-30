@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Taco Tuesday — Design System</title>
+<link rel="icon" href="../00-brand/logo/favicon.svg">
+<link rel="stylesheet" href="../01-tokens/theme.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  .wrap{max-width:1080px;margin:0 auto;padding:var(--tt-space-6) var(--tt-space-5) var(--tt-space-9)}
+  header{display:flex;align-items:center;gap:var(--tt-space-4);flex-wrap:wrap;
+    padding-bottom:var(--tt-space-5);border-bottom:1px solid var(--tt-border)}
+  header p{margin:.25rem 0 0;color:var(--tt-text-secondary);font-size:var(--tt-text-sm)}
+  .spacer{flex:1}
+  section{margin-top:var(--tt-space-7)}
+  section>h2{font-size:var(--tt-text-xl);padding-bottom:var(--tt-space-2);
+    border-bottom:1px solid var(--tt-border)}
+  h3{font-size:var(--tt-text-sm);font-weight:600;text-transform:uppercase;
+    letter-spacing:var(--tt-tracking-wide);color:var(--tt-text-muted);
+    margin:var(--tt-space-5) 0 var(--tt-space-2)}
+  .ramp{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:var(--tt-space-2)}
+  .sw{display:flex;flex-direction:column;gap:2px}
+  .sw b{font-size:var(--tt-text-xs);font-weight:600}
+  .sw code{font-size:10px;color:var(--tt-text-muted)}
+  .chip{height:52px;border-radius:var(--tt-radius-md);border:1px solid rgba(128,128,128,.22)}
+  .chip.tok{height:44px}
+  .card{background:var(--tt-bg-surface);border:1px solid var(--tt-border);
+    border-radius:var(--tt-radius-lg);padding:var(--tt-space-5);box-shadow:var(--tt-shadow-sm)}
+  .row{display:flex;gap:var(--tt-space-3);flex-wrap:wrap;align-items:center}
+  .btn{font:600 var(--tt-text-sm)/1 var(--tt-font-body);border-radius:var(--tt-radius-md);
+    padding:.65rem 1.1rem;border:1px solid transparent;cursor:pointer;
+    transition:background var(--tt-motion-fast) var(--tt-ease)}
+  .btn-primary{background:var(--tt-brand);color:var(--tt-on-brand)}
+  .btn-primary:hover{background:var(--tt-brand-hover)}
+  .btn-accent{background:var(--tt-accent);color:var(--tt-on-accent)}
+  .btn-ghost{background:transparent;color:var(--tt-brand-text);border-color:var(--tt-brand-border)}
+  .btn-ghost:hover{background:var(--tt-brand-subtle)}
+  .btn-quiet{background:transparent;color:var(--tt-text-secondary);border-color:var(--tt-border)}
+  .badge{display:inline-flex;align-items:center;gap:.35rem;font:500 var(--tt-text-xs)/1 var(--tt-font-body);
+    padding:.35rem .6rem;border-radius:var(--tt-radius-full)}
+  .b-success{background:var(--tt-success-subtle);color:var(--tt-success)}
+  .b-warning{background:var(--tt-warning-subtle);color:var(--tt-warning)}
+  .b-danger{background:var(--tt-danger-subtle);color:var(--tt-danger)}
+  .b-info{background:var(--tt-info-subtle);color:var(--tt-info)}
+  input[type=text]{font:400 var(--tt-text-sm) var(--tt-font-body);padding:.6rem .8rem;
+    border:1px solid var(--tt-border-strong);border-radius:var(--tt-radius-md);
+    background:var(--tt-bg-surface);color:var(--tt-text-primary);min-width:220px}
+  .icons{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:var(--tt-space-3)}
+  .ic{display:flex;flex-direction:column;align-items:center;gap:6px;padding:var(--tt-space-3);
+    border:1px solid var(--tt-border);border-radius:var(--tt-radius-md);color:var(--tt-text-primary)}
+  .ic code{font-size:10px;color:var(--tt-text-muted);text-align:center}
+  .stack{display:flex;flex-direction:column;gap:var(--tt-space-4)}
+  .logos{display:flex;gap:var(--tt-space-5);flex-wrap:wrap;align-items:center}
+  .logo-box{padding:var(--tt-space-4);border:1px solid var(--tt-border);
+    border-radius:var(--tt-radius-lg);background:var(--tt-barro-25)}
+  .logo-box.dark{background:var(--tt-barro-950)}
+  .scale li{margin-bottom:.4rem}
+  .spacebar{background:var(--tt-brand);height:14px;border-radius:3px}
+  table{width:100%;border-collapse:collapse;font-size:var(--tt-text-sm)}
+  td,th{text-align:left;padding:.5rem .6rem;border-bottom:1px solid var(--tt-border)}
+  th{color:var(--tt-text-muted);font-weight:600;font-size:var(--tt-text-xs);
+    text-transform:uppercase;letter-spacing:var(--tt-tracking-wide)}
+</style>
+</head>
+<body>
+<!-- icons:sprite:start — generado por tools/sync-icons.mjs — no editar a mano -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="tt-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M16.2 16.2 21 21"/></symbol>
+  <symbol id="tt-filter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18l-7 8.2V19l-4 2v-7.8z"/></symbol>
+  <symbol id="tt-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M8 3v4M16 3v4M3 10h18"/></symbol>
+  <symbol id="tt-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.2 2"/></symbol>
+  <symbol id="tt-video" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="13" height="12" rx="2.5"/><path d="M15.5 10.2 21 7v10l-5.5-3.2z"/></symbol>
+  <symbol id="tt-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/></symbol>
+  <symbol id="tt-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3.2 2.75 5.6 6.15.9-4.45 4.35 1.05 6.15L12 17.3l-5.5 2.9 1.05-6.15L3.1 9.7l6.15-.9z"/></symbol>
+  <symbol id="tt-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0"/></symbol>
+  <symbol id="tt-building" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 8h2M13 8h2M9 12h2M13 12h2M10 21v-4h4v4"/></symbol>
+  <symbol id="tt-briefcase" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M9 7V5.2A2.2 2.2 0 0 1 11.2 3h1.6A2.2 2.2 0 0 1 15 5.2V7M3 12.5h18"/></symbol>
+  <symbol id="tt-check-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12.4 2.7 2.7L16 9.6"/></symbol>
+  <symbol id="tt-alert-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.4v5.4M12 16.3h.01"/></symbol>
+  <symbol id="tt-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+  <symbol id="tt-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7.5 8.5 12 4l4.5 4.5M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></symbol>
+  <symbol id="tt-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12M7.5 11.5 12 16l4.5-4.5M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></symbol>
+  <symbol id="tt-edit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L20 8l-4-4L4 16zM14 6l4 4"/></symbol>
+  <symbol id="tt-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V5.2A1.2 1.2 0 0 1 10.2 4h3.6A1.2 1.2 0 0 1 15 5.2V7M6.5 7l.9 13a1.5 1.5 0 0 0 1.5 1.4h6.2a1.5 1.5 0 0 0 1.5-1.4l.9-13M10 11v6M14 11v6"/></symbol>
+  <symbol id="tt-sliders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h8M18.5 7H20M4 12h2.5M12.5 12H20M4 17h8M18.5 17H20"/><circle cx="15" cy="7" r="2.4"/><circle cx="9.5" cy="12" r="2.4"/><circle cx="15" cy="17" r="2.4"/></symbol>
+  <symbol id="tt-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15.5V10a6 6 0 1 0-12 0v5.5L4 19h16zM10 21.2h4"/></symbol>
+  <symbol id="tt-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  <symbol id="tt-chevron-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m9 5 7 7-7 7"/></symbol>
+  <symbol id="tt-external-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 13.5V18a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 4 18V9a2.5 2.5 0 0 1 2.5-2.5H11"/></symbol>
+  <symbol id="tt-code" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m9 8-5 4 5 4M15 8l5 4-5 4"/></symbol>
+  <symbol id="tt-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.8 7 7.2 5.4a1.7 1.7 0 0 0 2 0L20.2 7"/></symbol>
+  <symbol id="tt-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="tt-logout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4h3a2.5 2.5 0 0 1 2.5 2.5v11A2.5 2.5 0 0 1 18 20h-3M10 8l-4 4 4 4M6 12h10"/></symbol>
+  <symbol id="tt-thumbs-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 21V10.2l4.3-6.6a1.9 1.9 0 0 1 3.4 1.6L14 10h4.6a2 2 0 0 1 1.95 2.45l-1.4 6A2 2 0 0 1 17.2 21z"/><path d="M7.5 10.2H4V21h3.5"/></symbol>
+  <symbol id="tt-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12S6 5.8 12 5.8 21.5 12 21.5 12 18 18.2 12 18.2 2.5 12 2.5 12"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="tt-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.9M12 18.6v2.9M2.5 12h2.9M18.6 12h2.9M5.3 5.3l2.05 2.05M16.65 16.65l2.05 2.05M18.7 5.3l-2.05 2.05M5.3 18.7l2.05-2.05"/></symbol>
+  <symbol id="tt-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9.2 3.7a8.8 8.8 0 1 0 11.2 11.2 8.5 8.5 0 0 1-11.2-11.2z"/></symbol>
+</svg>
+<!-- icons:sprite:end -->
+
+<div class="wrap">
+
+<header>
+  <svg viewBox="0 0 64 64" width="52" height="52"><rect width="64" height="64" rx="15" fill="#176E63"/><g fill="#FBFAF8">
+    <path d="M32 50 C29 41 29 31 32 24 C35 31 35 41 32 50 Z" transform="rotate(-54 32 50)"/>
+    <path d="M32 50 C29 41 29 31 32 24 C35 31 35 41 32 50 Z" transform="rotate(54 32 50)"/>
+    <path d="M32 50 C28.5 39 28.5 26 32 18 C35.5 26 35.5 39 32 50 Z" transform="rotate(-28 32 50)"/>
+    <path d="M32 50 C28.5 39 28.5 26 32 18 C35.5 26 35.5 39 32 50 Z" transform="rotate(28 32 50)"/>
+  </g>
+  <path d="M32 50 C28 38 28 22 32 12 C36 22 36 38 32 50 Z" fill="#EEB74E"/></svg>
+  <div>
+    <h1 style="margin:0;font-size:var(--tt-text-2xl)">Taco Tuesday — Design System</h1>
+    <p>Agave &amp; Maíz · v1.0.0 · un solo tema, dos modos</p>
+  </div>
+  <div class="spacer"></div>
+  <button class="btn btn-quiet" id="toggle">Cambiar a oscuro</button>
+</header>
+
+<section>
+  <h2>Logotipos</h2>
+  <div class="logos">
+    <div class="logo-box"><svg viewBox="0 0 344 64" width="260" height="48"><rect width="64" height="64" rx="15" fill="#176E63"/><g fill="#FBFAF8">
+    <path d="M32 50 C29 41 29 31 32 24 C35 31 35 41 32 50 Z" transform="rotate(-54 32 50)"/>
+    <path d="M32 50 C29 41 29 31 32 24 C35 31 35 41 32 50 Z" transform="rotate(54 32 50)"/>
+    <path d="M32 50 C28.5 39 28.5 26 32 18 C35.5 26 35.5 39 32 50 Z" transform="rotate(-28 32 50)"/>
+    <path d="M32 50 C28.5 39 28.5 26 32 18 C35.5 26 35.5 39 32 50 Z" transform="rotate(28 32 50)"/>
+  </g>
+  <path d="M32 50 C28 38 28 22 32 12 C36 22 36 38 32 50 Z" fill="#EEB74E"/><text x="82" y="32" font-family="Outfit,sans-serif" font-size="23" font-weight="700" letter-spacing="0.5"><tspan fill="#211E1A">TACO </tspan><tspan fill="#176E63">TUESDAY</tspan></text><text x="83" y="49" font-family="Inter,sans-serif" font-size="10.5" font-weight="500" letter-spacing="3.4" fill="#7E7468">CONSULTING</text></svg></div>
+    <div class="logo-box dark"><svg viewBox="0 0 344 64" width="260" height="48"><rect width="64" height="64" rx="15" fill="#0F453F"/><g fill="#FBFAF8">
+    <path d="M32 50 C29 41 29 31 32 24 C35 31 35 41 32 50 Z" transform="rotate(-54 32 50)"/>
+    <path d="M32 50 C29 41 29 31 32 24 C35 31 35 41 32 50 Z" transform="rotate(54 32 50)"/>
+    <path d="M32 50 C28.5 39 28.5 26 32 18 C35.5 26 35.5 39 32 50 Z" transform="rotate(-28 32 50)"/>
+    <path d="M32 50 C28.5 39 28.5 26 32 18 C35.5 26 35.5 39 32 50 Z" transform="rotate(28 32 50)"/>
+  </g>
+  <path d="M32 50 C28 38 28 22 32 12 C36 22 36 38 32 50 Z" fill="#EEB74E"/><text x="82" y="32" font-family="Outfit,sans-serif" font-size="23" font-weight="700" letter-spacing="0.5"><tspan fill="#F6F4F1">TACO </tspan><tspan fill="#6FC2B2">TUESDAY</tspan></text><text x="83" y="49" font-family="Inter,sans-serif" font-size="10.5" font-weight="500" letter-spacing="3.4" fill="#A0968A">CONSULTING</text></svg></div>
+    <div class="logo-box"><svg viewBox="0 0 64 64" width="56" height="56"><rect width="64" height="64" rx="15" fill="#176E63"/><g fill="#FBFAF8">
+    <path d="M32 50 C29 41 29 31 32 24 C35 31 35 41 32 50 Z" transform="rotate(-54 32 50)"/>
+    <path d="M32 50 C29 41 29 31 32 24 C35 31 35 41 32 50 Z" transform="rotate(54 32 50)"/>
+    <path d="M32 50 C28.5 39 28.5 26 32 18 C35.5 26 35.5 39 32 50 Z" transform="rotate(-28 32 50)"/>
+    <path d="M32 50 C28.5 39 28.5 26 32 18 C35.5 26 35.5 39 32 50 Z" transform="rotate(28 32 50)"/>
+  </g>
+  <path d="M32 50 C28 38 28 22 32 12 C36 22 36 38 32 50 Z" fill="#EEB74E"/></svg></div>
+    <div class="logo-box"><svg viewBox="0 0 64 64" width="32" height="32"><rect width="64" height="64" rx="15" fill="#176E63"/><g fill="#FBFAF8">
+    <path d="M32 50 C29 41 29 31 32 24 C35 31 35 41 32 50 Z" transform="rotate(-54 32 50)"/>
+    <path d="M32 50 C29 41 29 31 32 24 C35 31 35 41 32 50 Z" transform="rotate(54 32 50)"/>
+    <path d="M32 50 C28.5 39 28.5 26 32 18 C35.5 26 35.5 39 32 50 Z" transform="rotate(-28 32 50)"/>
+    <path d="M32 50 C28.5 39 28.5 26 32 18 C35.5 26 35.5 39 32 50 Z" transform="rotate(28 32 50)"/>
+  </g>
+  <path d="M32 50 C28 38 28 22 32 12 C36 22 36 38 32 50 Z" fill="#EEB74E"/></svg></div>
+    <div class="logo-box"><svg viewBox="0 0 64 64" width="20" height="20"><rect width="64" height="64" rx="15" fill="#176E63"/><g fill="#FBFAF8">
+    <path d="M32 50 C29 41 29 31 32 24 C35 31 35 41 32 50 Z" transform="rotate(-54 32 50)"/>
+    <path d="M32 50 C29 41 29 31 32 24 C35 31 35 41 32 50 Z" transform="rotate(54 32 50)"/>
+    <path d="M32 50 C28.5 39 28.5 26 32 18 C35.5 26 35.5 39 32 50 Z" transform="rotate(-28 32 50)"/>
+    <path d="M32 50 C28.5 39 28.5 26 32 18 C35.5 26 35.5 39 32 50 Z" transform="rotate(28 32 50)"/>
+  </g>
+  <path d="M32 50 C28 38 28 22 32 12 C36 22 36 38 32 50 Z" fill="#EEB74E"/></svg></div>
+  </div>
+</section>
+
+<section>
+  <h2>Paleta</h2>
+  <h3>Agave — primario</h3><div class="ramp"><div class="sw"><div class="chip" style="background:#ECF7F4"></div><b>50</b><code>#ECF7F4</code></div><div class="sw"><div class="chip" style="background:#D0EDE6"></div><b>100</b><code>#D0EDE6</code></div><div class="sw"><div class="chip" style="background:#A3DACE"></div><b>200</b><code>#A3DACE</code></div><div class="sw"><div class="chip" style="background:#6FC2B2"></div><b>300</b><code>#6FC2B2</code></div><div class="sw"><div class="chip" style="background:#41A695"></div><b>400</b><code>#41A695</code></div><div class="sw"><div class="chip" style="background:#22897A"></div><b>500</b><code>#22897A</code></div><div class="sw"><div class="chip" style="background:#176E63"></div><b>600</b><code>#176E63</code></div><div class="sw"><div class="chip" style="background:#12574F"></div><b>700</b><code>#12574F</code></div><div class="sw"><div class="chip" style="background:#0F453F"></div><b>800</b><code>#0F453F</code></div><div class="sw"><div class="chip" style="background:#0C3833"></div><b>900</b><code>#0C3833</code></div><div class="sw"><div class="chip" style="background:#06211E"></div><b>950</b><code>#06211E</code></div></div>
+  <h3>Maíz — acento</h3><div class="ramp"><div class="sw"><div class="chip" style="background:#FDF6E9"></div><b>50</b><code>#FDF6E9</code></div><div class="sw"><div class="chip" style="background:#FAE9C6"></div><b>100</b><code>#FAE9C6</code></div><div class="sw"><div class="chip" style="background:#F5D28C"></div><b>200</b><code>#F5D28C</code></div><div class="sw"><div class="chip" style="background:#EEB74E"></div><b>300</b><code>#EEB74E</code></div><div class="sw"><div class="chip" style="background:#E5A020"></div><b>400</b><code>#E5A020</code></div><div class="sw"><div class="chip" style="background:#C98314"></div><b>500</b><code>#C98314</code></div><div class="sw"><div class="chip" style="background:#A26610"></div><b>600</b><code>#A26610</code></div><div class="sw"><div class="chip" style="background:#7E4F10"></div><b>700</b><code>#7E4F10</code></div><div class="sw"><div class="chip" style="background:#5E3B0E"></div><b>800</b><code>#5E3B0E</code></div><div class="sw"><div class="chip" style="background:#452C0C"></div><b>900</b><code>#452C0C</code></div><div class="sw"><div class="chip" style="background:#241605"></div><b>950</b><code>#241605</code></div></div>
+  <h3>Barro — neutros cálidos</h3><div class="ramp"><div class="sw"><div class="chip" style="background:#FFFFFF"></div><b>0</b><code>#FFFFFF</code></div><div class="sw"><div class="chip" style="background:#FBFAF8"></div><b>25</b><code>#FBFAF8</code></div><div class="sw"><div class="chip" style="background:#F6F4F1"></div><b>50</b><code>#F6F4F1</code></div><div class="sw"><div class="chip" style="background:#EDEAE5"></div><b>100</b><code>#EDEAE5</code></div><div class="sw"><div class="chip" style="background:#DDD8D0"></div><b>200</b><code>#DDD8D0</code></div><div class="sw"><div class="chip" style="background:#C3BCB1"></div><b>300</b><code>#C3BCB1</code></div><div class="sw"><div class="chip" style="background:#A0968A"></div><b>400</b><code>#A0968A</code></div><div class="sw"><div class="chip" style="background:#7E7468"></div><b>500</b><code>#7E7468</code></div><div class="sw"><div class="chip" style="background:#625A50"></div><b>600</b><code>#625A50</code></div><div class="sw"><div class="chip" style="background:#4B443C"></div><b>700</b><code>#4B443C</code></div><div class="sw"><div class="chip" style="background:#332E29"></div><b>800</b><code>#332E29</code></div><div class="sw"><div class="chip" style="background:#211E1A"></div><b>900</b><code>#211E1A</code></div><div class="sw"><div class="chip" style="background:#14120F"></div><b>950</b><code>#14120F</code></div></div>
+  <h3>Tokens semánticos (cambian con el tema)</h3>
+  <div class="ramp"><div class="sw"><div class="chip tok" style="background:var(--tt-bg-canvas)"></div><b>bg-canvas</b><code>--tt-bg-canvas</code></div><div class="sw"><div class="chip tok" style="background:var(--tt-bg-surface)"></div><b>bg-surface</b><code>--tt-bg-surface</code></div><div class="sw"><div class="chip tok" style="background:var(--tt-bg-subtle)"></div><b>bg-subtle</b><code>--tt-bg-subtle</code></div><div class="sw"><div class="chip tok" style="background:var(--tt-border)"></div><b>border</b><code>--tt-border</code></div><div class="sw"><div class="chip tok" style="background:var(--tt-text-primary)"></div><b>text-primary</b><code>--tt-text-primary</code></div><div class="sw"><div class="chip tok" style="background:var(--tt-text-secondary)"></div><b>text-secondary</b><code>--tt-text-secondary</code></div><div class="sw"><div class="chip tok" style="background:var(--tt-text-muted)"></div><b>text-muted</b><code>--tt-text-muted</code></div><div class="sw"><div class="chip tok" style="background:var(--tt-brand)"></div><b>brand</b><code>--tt-brand</code></div><div class="sw"><div class="chip tok" style="background:var(--tt-brand-hover)"></div><b>brand-hover</b><code>--tt-brand-hover</code></div><div class="sw"><div class="chip tok" style="background:var(--tt-brand-subtle)"></div><b>brand-subtle</b><code>--tt-brand-subtle</code></div><div class="sw"><div class="chip tok" style="background:var(--tt-accent)"></div><b>accent</b><code>--tt-accent</code></div><div class="sw"><div class="chip tok" style="background:var(--tt-accent-subtle)"></div><b>accent-subtle</b><code>--tt-accent-subtle</code></div><div class="sw"><div class="chip tok" style="background:var(--tt-success)"></div><b>success</b><code>--tt-success</code></div><div class="sw"><div class="chip tok" style="background:var(--tt-warning)"></div><b>warning</b><code>--tt-warning</code></div><div class="sw"><div class="chip tok" style="background:var(--tt-danger)"></div><b>danger</b><code>--tt-danger</code></div><div class="sw"><div class="chip tok" style="background:var(--tt-info)"></div><b>info</b><code>--tt-info</code></div></div>
+</section>
+
+<section>
+  <h2>Tipografía</h2>
+  <div class="card stack">
+    <div style="font-family:var(--tt-font-display);font-size:var(--tt-text-4xl);font-weight:700;letter-spacing:var(--tt-tracking-tight);line-height:1.2">Outfit · Display 4xl</div>
+    <div style="font-family:var(--tt-font-display);font-size:var(--tt-text-2xl);font-weight:600">Outfit · Heading 2xl</div>
+    <div style="font-size:var(--tt-text-base)">Inter · Body base — el texto que la gente lee de verdad. Interlineado 1.55 para párrafos largos.</div>
+    <div style="font-size:var(--tt-text-sm);color:var(--tt-text-secondary)">Inter · Small — texto de apoyo, etiquetas, ayudas de formulario.</div>
+    <div style="font-family:var(--tt-font-mono);font-size:var(--tt-text-sm)">JetBrains Mono · code — para el editor de la entrevista técnica</div>
+  </div>
+</section>
+
+<section>
+  <h2>Componentes</h2>
+  <div class="card stack">
+    <div class="row">
+      <button class="btn btn-primary">Agendar entrevista</button>
+      <button class="btn btn-accent">Enviar feedback</button>
+      <button class="btn btn-ghost">Ver perfil</button>
+      <button class="btn btn-quiet">Cancelar</button>
+    </div>
+    <div class="row">
+      <span class="badge b-success"><svg width="14" height="14"><use href="#tt-check-circle"/></svg> Feedback enviado</span>
+      <span class="badge b-warning"><svg width="14" height="14"><use href="#tt-clock"/></svg> Faltan 6 h</span>
+      <span class="badge b-danger"><svg width="14" height="14"><use href="#tt-alert-circle"/></svg> Vencido</span>
+      <span class="badge b-info"><svg width="14" height="14"><use href="#tt-calendar"/></svg> Agendada</span>
+    </div>
+    <div class="row">
+      <input type="text" placeholder="Buscar candidato…">
+      <button class="btn btn-primary"><svg width="14" height="14" style="vertical-align:-2px"><use href="#tt-search"/></svg> Buscar</button>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Iconos <span style="font-weight:400;color:var(--tt-text-muted);font-size:var(--tt-text-sm)">— 24×24, trazo 1.75, currentColor</span></h2>
+  <!-- icons:gallery:start — generado por tools/sync-icons.mjs — no editar a mano -->
+  <div class="icons"><div class="ic"><svg width="24" height="24"><use href="#tt-search"/></svg><code>search</code></div><div class="ic"><svg width="24" height="24"><use href="#tt-filter"/></svg><code>filter</code></div><div class="ic"><svg width="24" height="24"><use href="#tt-calendar"/></svg><code>calendar</code></div><div class="ic"><svg width="24" height="24"><use href="#tt-clock"/></svg><code>clock</code></div><div class="ic"><svg width="24" height="24"><use href="#tt-video"/></svg><code>video</code></div><div class="ic"><svg width="24" height="24"><use href="#tt-chat"/></svg><code>chat</code></div><div class="ic"><svg width="24" height="24"><use href="#tt-star"/></svg><code>star</code></div><div class="ic"><svg width="24" height="24"><use href="#tt-user"/></svg><code>user</code></div><div class="ic"><svg width="24" height="24"><use href="#tt-building"/></svg><code>building</code></div><div class="ic"><svg width="24" height="24"><use href="#tt-briefcase"/></svg><code>briefcase</code></div><div class="ic"><svg width="24" height="24"><use href="#tt-check-circle"/></svg><code>check-circle</code></div><div class="ic"><svg width="24" height="24"><use href="#tt-alert-circle"/></svg><code>alert-circle</code></div><div class="ic"><svg width="24" height="24"><use href="#tt-close"/></svg><code>close</code></div><div class="ic"><svg width="24" height="24"><use href="#tt-upload"/></svg><code>upload</code></div><div class="ic"><svg width="24" height="24"><use href="#tt-download"/></svg><code>download</code></div><div class="ic"><svg width="24" height="24"><use href="#tt-edit"/></svg><code>edit</code></div><div class="ic"><svg width="24" height="24"><use href="#tt-trash"/></svg><code>trash</code></div><div class="ic"><svg width="24" height="24"><use href="#tt-sliders"/></svg><code>sliders</code></div><div class="ic"><svg width="24" height="24"><use href="#tt-bell"/></svg><code>bell</code></div><div class="ic"><svg width="24" height="24"><use href="#tt-menu"/></svg><code>menu</code></div><div class="ic"><svg width="24" height="24"><use href="#tt-chevron-right"/></svg><code>chevron-right</code></div><div class="ic"><svg width="24" height="24"><use href="#tt-external-link"/></svg><code>external-link</code></div><div class="ic"><svg width="24" height="24"><use href="#tt-code"/></svg><code>code</code></div><div class="ic"><svg width="24" height="24"><use href="#tt-mail"/></svg><code>mail</code></div><div class="ic"><svg width="24" height="24"><use href="#tt-plus"/></svg><code>plus</code></div><div class="ic"><svg width="24" height="24"><use href="#tt-logout"/></svg><code>logout</code></div><div class="ic"><svg width="24" height="24"><use href="#tt-thumbs-up"/></svg><code>thumbs-up</code></div><div class="ic"><svg width="24" height="24"><use href="#tt-eye"/></svg><code>eye</code></div><div class="ic"><svg width="24" height="24"><use href="#tt-sun"/></svg><code>sun</code></div><div class="ic"><svg width="24" height="24"><use href="#tt-moon"/></svg><code>moon</code></div></div>
+  <!-- icons:gallery:end -->
+</section>
+
+<section>
+  <h2>Espaciado, radios y sombras</h2>
+  <div class="card">
+    <h3>Escala de espaciado (base 4 px)</h3>
+    <table>
+      <tr><th>token</th><th>valor</th><th></th></tr>
+      <tr><td><code>space-1</code></td><td>4px</td><td><div class="spacebar" style="width:4px"></div></td></tr>
+      <tr><td><code>space-2</code></td><td>8px</td><td><div class="spacebar" style="width:8px"></div></td></tr>
+      <tr><td><code>space-3</code></td><td>12px</td><td><div class="spacebar" style="width:12px"></div></td></tr>
+      <tr><td><code>space-4</code></td><td>16px</td><td><div class="spacebar" style="width:16px"></div></td></tr>
+      <tr><td><code>space-5</code></td><td>24px</td><td><div class="spacebar" style="width:24px"></div></td></tr>
+      <tr><td><code>space-6</code></td><td>32px</td><td><div class="spacebar" style="width:32px"></div></td></tr>
+      <tr><td><code>space-7</code></td><td>48px</td><td><div class="spacebar" style="width:48px"></div></td></tr>
+      <tr><td><code>space-8</code></td><td>64px</td><td><div class="spacebar" style="width:64px"></div></td></tr>
+    </table>
+    <h3>Radios</h3>
+    <div class="row">
+      <div style="width:72px;height:56px;background:var(--tt-brand-subtle);border:1px solid var(--tt-brand-border);border-radius:4px;display:grid;place-items:center;font-size:11px">sm</div>
+      <div style="width:72px;height:56px;background:var(--tt-brand-subtle);border:1px solid var(--tt-brand-border);border-radius:8px;display:grid;place-items:center;font-size:11px">md</div>
+      <div style="width:72px;height:56px;background:var(--tt-brand-subtle);border:1px solid var(--tt-brand-border);border-radius:12px;display:grid;place-items:center;font-size:11px">lg</div>
+      <div style="width:72px;height:56px;background:var(--tt-brand-subtle);border:1px solid var(--tt-brand-border);border-radius:16px;display:grid;place-items:center;font-size:11px">xl</div>
+      <div style="width:72px;height:56px;background:var(--tt-brand-subtle);border:1px solid var(--tt-brand-border);border-radius:999px;display:grid;place-items:center;font-size:11px">full</div>
+    </div>
+    <h3>Sombras</h3>
+    <div class="row">
+      <div style="width:120px;height:64px;background:var(--tt-bg-surface);border-radius:12px;box-shadow:var(--tt-shadow-sm);display:grid;place-items:center;font-size:11px">sm</div>
+      <div style="width:120px;height:64px;background:var(--tt-bg-surface);border-radius:12px;box-shadow:var(--tt-shadow-md);display:grid;place-items:center;font-size:11px">md</div>
+      <div style="width:120px;height:64px;background:var(--tt-bg-surface);border-radius:12px;box-shadow:var(--tt-shadow-lg);display:grid;place-items:center;font-size:11px">lg</div>
+    </div>
+  </div>
+</section>
+
+</div>
+<script>
+  const root = document.documentElement, btn = document.getElementById('toggle');
+  const label = () => btn.textContent =
+    root.dataset.theme === 'dark' ? 'Cambiar a claro' : 'Cambiar a oscuro';
+  root.dataset.theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  label();
+  btn.onclick = () => { root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark'; label(); };
+</script>
+</body>
+</html>

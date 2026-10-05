@@ -1,0 +1,98 @@
+# VERIFICADO el 30-sep corriendo el step de verdad, con los dos repos clonados de
+# GitHub y puestos lado a lado como los deja el checkout. Tres casos:
+#   * todo en orden                      -> las 4 copias `ok`, exit 0
+#   * la copia de la UI desviada         -> exit 1, y dice cual
+#   * el checkout de la UI no llega      -> el script pelado saldria **0** con un
+#     `skipped`, y el guard de abajo lo convierte en exit 1 con ::error::
+# Ese tercer caso es la razon de ser del `grep skipped`, y es real: comprobado
+# moviendo la carpeta de la UI. Sin el, el job se pondria verde sin haber
+# revisado la unica copia que llega a los visitantes.
+#
+# The sprite, the preview's inline copy, the preview's gallery, the UI's
+# `public/icons.svg` and the icon count in README.md are all GENERATED from
+# `02-icons/` + `02-icons/icons.json` by `tools/sync-icons.mjs` (TD-007).
+#
+# `--check` writes nothing and exits 1 if any copy has drifted from the source.
+# Until this file existed, running it depended on somebody remembering — and the
+# thing it guards is invisible to every other check in the project: no build
+# compiles an `.svg`, no test opens one, and a `<use href>` pointing at a symbol
+# that is not in the sprite renders an EMPTY button while every spec stays green.
+# That is how TD-004 shipped a sprite with a missing icon.
+#
+# This is the last step of TD-007. It could not exist until 29-sep, because this
+# repository was not a git repository at all.
+
+name: Icons
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: icons-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  icons-in-sync:
+    name: Every icon copy matches the source
+    runs-on: ubuntu-latest
+
+    steps:
+      # Both repositories, side by side, and that layout is a requirement rather
+      # than a convenience: one of the five copies the script checks lives in the
+      # OTHER repository, at `../TacoTuesdayUI/public/icons.svg`, resolved relative
+      # to this repo's root. Check out only this repo and the script cannot see it.
+      #
+      # Both are public, so neither checkout needs a credential.
+      - name: Check out the design system
+        uses: actions/checkout@v4
+        with:
+          path: TacoTuesdayDesign
+
+      - name: Check out the UI, for its copy of the sprite
+        uses: actions/checkout@v4
+        with:
+          repository: Gio-Mtz/TacoTuesdayUI
+          path: TacoTuesdayUI
+
+      # Pinned rather than "whatever the runner ships": the script is plain ESM
+      # with zero dependencies and no `npm install`, so Node is the only tool it
+      # has, and the version it was verified on is worth naming.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # The output is parsed, not just exited on, and that is the point of this
+      # step rather than a bare `node tools/sync-icons.mjs --check`.
+      #
+      # When a target file is absent the script prints `skipped` for it and still
+      # exits 0 — reasonable for a developer running it with only one repo cloned,
+      # and a silent hole in CI: if the UI checkout above ever stops landing where
+      # the script looks (a rename, a moved folder, a failed clone), the job would
+      # go green while the copy that actually reaches visitors drifts unchecked.
+      # A guard that passes for the wrong reason is worse than no guard, so a skip
+      # is a failure here.
+      - name: sync-icons --check
+        working-directory: TacoTuesdayDesign
+        run: |
+          set -o pipefail
+
+          # The exit code is captured rather than leaned on. `run:` executes under
+          # `bash -e`, so a non-zero `node` would abort the step on its own — but
+          # then the skip check below would never run, and the step's behaviour
+          # would depend on an option set somewhere this file does not show. An
+          # explicit status is the same length and says what it does.
+          status=0
+          node tools/sync-icons.mjs --check | tee check.log || status=$?
+
+          if grep -q 'skipped' check.log; then
+            echo "::error::sync-icons skipped a copy instead of checking it. A file it expects is missing — most likely the UI checkout did not land at ../TacoTuesdayUI. Nothing was verified for that copy."
+            status=1
+          fi
+
+          exit $status
